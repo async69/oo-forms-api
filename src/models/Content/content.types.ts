@@ -35,6 +35,7 @@ export interface IFilterOptions {
   PHY_STATE: string
   CARRIER_OPERATION: string
   PC_FLAG: string
+  PAGE_NUMBER: number
 }
 
 export interface IContent {

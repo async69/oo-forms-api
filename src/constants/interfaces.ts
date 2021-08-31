@@ -6,3 +6,8 @@ export interface ErrorType {
 export interface IUserID {
   _id: string
 }
+
+export interface IResult {
+  count: number
+  results: object
+}

@@ -1,6 +1,7 @@
 import { IContentEnum, IContentDoc, GQLFilterOptions } from "../../models/Content/content.types"
 import fs from 'fs'
 import readline from 'readline'
+import { IResult } from "../../constants/interfaces"
 
 const columns = 'DOT_NUMBER","LEGAL_NAME","DBA_NAME","CARRIER_OPERATION","HM_FLAG","PC_FLAG","PHY_STREET","PHY_CITY","PHY_STATE","PHY_ZIP","PHY_COUNTRY","MAILING_STREET","MAILING_CITY","MAILING_STATE","MAILING_ZIP","MAILING_COUNTRY","TELEPHONE","FAX","EMAIL_ADDRESS","MCS150_DATE","MCS150_MILEAGE","MCS150_MILEAGE_YEAR","ADD_DATE","OIC_STATE","NBR_POWER_UNIT","DRIVER_TOTAL"'
 
@@ -35,13 +36,8 @@ const ContentResolver = {
         const foundArray = dataItem.split(',')
         database.push(foundArray)
       })
-      console.log("some", database)
-      const filteredArray1 = line.split(',')
-      const filteredArray2 = line2.split(',')
-      const filteredArray3 = line3.split(',')
       const keys: string[] = Object.keys(IContentEnum)
       const resultArray: any[] = []
-      // const database = [filteredArray1, filteredArray2, filteredArray3]
       database.forEach((filteredArray: string[], _idx: number) => {
         let resultObj: any = {}
         keys.forEach((key: string, keyIdx: number) => {
@@ -52,7 +48,7 @@ const ContentResolver = {
       const collection: IContentDoc[] = [...resultArray]
       return collection
     },
-    async fetchWithFilters(_: any, { input: prop }: GQLFilterOptions) {
+    async fetchWithFilters(_: any, { input: prop }: GQLFilterOptions): Promise<IResult> {
       const collection = await ContentResolver.Query.fetchContents({}, {})
       const results: IContentDoc[] = []
       collection.forEach(data => {
@@ -83,7 +79,14 @@ const ContentResolver = {
           dateResults.push(data)
         }
       })
-      return dateResults
+      let numberOfPages = dateResults.length / 50
+      const remainder = dateResults.length % 50
+      if (remainder > 0 || remainder < 1) numberOfPages += 1
+      const start_index = (prop.PAGE_NUMBER - 1) * 50;
+      return {
+        count: Math.floor(numberOfPages),
+        results: dateResults.slice(start_index, start_index + 50)
+      }
     }
   }
 }

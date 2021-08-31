@@ -3,13 +3,18 @@ import { gql } from "apollo-server-express"
 export default gql`
   extend type Query {
     fetchContents: [ContentDoc]
-    fetchWithFilters(input: FilterOptions!): [ContentDoc]
+    fetchWithFilters(input: FilterOptions!): Result
   }
 
   extend type Mutation {
     postContent(input: IContentInput!): ContentDoc
     editContent(input: IContentEdit!): ContentDoc
     removeContent(_id: String!): ContentDoc
+  }
+
+  type Result {
+    count: Int
+    results: [ContentDoc]
   }
 
   type ContentDoc {
@@ -52,6 +57,7 @@ export default gql`
     PHY_STATE: String
     CARRIER_OPERATION: String
     PC_FLAG: String
+    PAGE_NUMBER: Int
   }
 
   input DateFilter {
