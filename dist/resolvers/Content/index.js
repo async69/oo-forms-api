@@ -164,6 +164,7 @@ var ContentResolver = {
                                         results.push(data);
                                 }
                                 if (prop.CARRIER_OPERATION) {
+                                    console.log("hereeee");
                                     if (String(data.CARRIER_OPERATION) === prop.CARRIER_OPERATION)
                                         results.push(data);
                                 }
