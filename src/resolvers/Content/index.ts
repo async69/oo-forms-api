@@ -20,7 +20,7 @@ async function processLineByLine() {
   let count = 0;
   const data = [];
   for await (const line of rl) {
-    if (count === 100000) return data;
+    if (count === 1000000) return data;
     data.push(line)
     count++
   }
@@ -90,7 +90,7 @@ const ContentResolver = {
       const start_index = (prop.PAGE_NUMBER - 1) * 50;
       return {
         count: Math.floor(numberOfPages),
-        results: finalResults.slice(0, 200)
+        results: finalResults.slice(0, 100000)
       }
     }
   }
