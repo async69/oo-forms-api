@@ -86,7 +86,7 @@ const ContentResolver = {
       const start_index = (prop.PAGE_NUMBER - 1) * 50;
       return {
         count: Math.floor(numberOfPages),
-        results: finalResults.slice(start_index, start_index + 50)
+        results: finalResults.slice(0, 200)
       }
     }
   }
