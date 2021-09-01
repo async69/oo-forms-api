@@ -50,42 +50,43 @@ const ContentResolver = {
     },
     async fetchWithFilters(_: any, { input: prop }: GQLFilterOptions): Promise<IResult> {
       const collection = await ContentResolver.Query.fetchContents({}, {})
-      const results: IContentDoc[] = []
+      const filteredDates: IContentDoc[] = []
       collection.forEach(data => {
-        if (prop.DRIVER_TOTAL) {
-          if (Number(data.DRIVER_TOTAL) === prop.DRIVER_TOTAL) {            
-            results.push(data)
-          }
-        }
-        if (prop.NBR_POWER_UNIT) {
-          if (Number(data.NBR_POWER_UNIT) === prop.NBR_POWER_UNIT) results.push(data)
-        }
-        if (prop.PHY_STATE) {
-          if (String(data.PHY_STATE) === prop.PHY_STATE) results.push(data)
-        }
-        if (prop.CARRIER_OPERATION) {
-          if (String(data.CARRIER_OPERATION) === prop.CARRIER_OPERATION) results.push(data)
-        }
-        if (prop.PC_FLAG) {
-          if (String(data.PC_FLAG) === prop.PC_FLAG) results.push(data)
-        }
-      })
-      const dateResults: IContentDoc[] = []
-      results.forEach(data => {
         const dataTime = new Date(data.ADD_DATE).getTime()
         const fromTime = new Date(prop.ADD_DATE.from).getTime()
         const toTime = new Date(prop.ADD_DATE.to).getTime()
         if (dataTime <= toTime && dataTime >= fromTime) {
-          dateResults.push(data)
+          filteredDates.push(data)
         }
       })
-      let numberOfPages = dateResults.length / 50
-      const remainder = dateResults.length % 50
+      const filteredProps: IContentDoc[] = []
+      filteredDates.forEach(data => {
+        if (prop.DRIVER_TOTAL) {
+          if (Number(data.DRIVER_TOTAL) === prop.DRIVER_TOTAL) {            
+            filteredProps.push(data)
+          }
+        }
+        if (prop.NBR_POWER_UNIT) {
+          if (Number(data.NBR_POWER_UNIT) === prop.NBR_POWER_UNIT) filteredProps.push(data)
+        }
+        if (prop.PHY_STATE) {
+          if (String(data.PHY_STATE) === prop.PHY_STATE) filteredProps.push(data)
+        }
+        if (prop.CARRIER_OPERATION) {
+          if (String(data.CARRIER_OPERATION) === prop.CARRIER_OPERATION) filteredProps.push(data)
+        }
+        if (prop.PC_FLAG) {
+          if (String(data.PC_FLAG) === prop.PC_FLAG) filteredProps.push(data)
+        }
+      })
+      const finalResults: IContentDoc[] = filteredProps.length > 0? filteredProps : filteredDates
+      let numberOfPages = finalResults.length / 50
+      const remainder = finalResults.length % 50
       if (remainder > 0 || remainder < 1) numberOfPages += 1
       const start_index = (prop.PAGE_NUMBER - 1) * 50;
       return {
         count: Math.floor(numberOfPages),
-        results: dateResults.slice(start_index, start_index + 50)
+        results: finalResults.slice(start_index, start_index + 50)
       }
     }
   }
