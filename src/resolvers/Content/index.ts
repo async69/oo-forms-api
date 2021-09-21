@@ -10,7 +10,7 @@ const line2 = '1000015,"DAREN STONE","","C","N","N","","","","","US","","","",""
 const line3 = '1000014,"HACKWELL TRUCKING LLC","","C","N","N","8767 HOLMAN CIR","ARVADA","CO","80005","US","8767 HOLMAN CIR","ARVADA","CO","80005","US","(303) 423-3329","","GHACKWE@COMCAST.NET","26-JAN-20","18000","2019","22-JAN-02","CO","1","1"'
 
 async function processLineByLine() {
-  const fileStream = fs.createReadStream(fs.realpathSync('./src/blob/file.txt'));
+  const fileStream = fs.createReadStream(fs.realpathSync(__dirname + "../../../blob/file.txt"));
 
   const rl = readline.createInterface({
     input: fileStream,
