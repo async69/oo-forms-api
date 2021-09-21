@@ -50,8 +50,12 @@ const ContentResolver = {
     },
     async fetchWithFilters(_: any, { input: prop }: GQLFilterOptions): Promise<IResult> {
       const collection = await ContentResolver.Query.fetchContents({}, {})
-      const filteredDates: IContentDoc[] = []
+      const resolvedProps: IContentDoc[] = []
       collection.forEach(data => {
+        if (data.CARRIER_OPERATION === 'A' && data.PC_FLAG === 'N' && Number(data.NBR_POWER_UNIT) < 5) resolvedProps.push(data)
+      })
+      const filteredDates: IContentDoc[] = []
+      resolvedProps.forEach(data => {
         const dataTime = new Date(data.ADD_DATE).getTime()
         const fromTime = new Date(prop.ADD_DATE.from).getTime()
         const toTime = new Date(prop.ADD_DATE.to).getTime()

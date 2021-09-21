@@ -27,7 +27,6 @@ export interface IDateFilter {
 export interface GQLFilterOptions {
   input: IFilterOptions
 }
-
 export interface IFilterOptions {
   ADD_DATE: IDateFilter
   NBR_POWER_UNIT: number
@@ -37,34 +36,33 @@ export interface IFilterOptions {
   PC_FLAG: string
   PAGE_NUMBER: number
 }
-
 export interface IContent {
-  DOT_NUMBER: string
-  LEGAL_NAME: string
-  DBA_NAME: string
-  CARRIER_OPERATION: string
-  HM_FLAG: string
-  PC_FLAG: string
-  PHY_STREET: string
-  PHY_CITY: string
-  PHY_STATE: string
-  PHY_ZIP: string
-  PHY_COUNTRY: string
-  MAILING_STREET: string
-  MAILING_CITY: string
-  MAILING_STATE: string
-  MAILING_ZIP: string
-  MAILING_COUNTRY: string
-  TELEPHONE: string
-  FAX: string
-  EMAIL_ADDRESS: string
-  MCS150_DATE: string
-  MCS150_MILEAGE: string
-  MCS150_MILEAGE_YEAR: string
-  ADD_DATE: string
-  OIC_STATE: string
-  NBR_POWER_UNIT: string
-  DRIVER_TOTAL: string
+  DOT_NUMBER: string // 0
+  LEGAL_NAME: string // 1
+  DBA_NAME: string // 2
+  CARRIER_OPERATION: string // 3
+  HM_FLAG: string // 4
+  PC_FLAG: string // 5
+  PHY_STREET: string // 6
+  PHY_CITY: string // 7
+  PHY_STATE: string // 8
+  PHY_ZIP: string // 9
+  PHY_COUNTRY: string // 10
+  MAILING_STREET: string // 11
+  MAILING_CITY: string // 12
+  MAILING_STATE: string // 13
+  MAILING_ZIP: string // 14
+  MAILING_COUNTRY: string // 15
+  TELEPHONE: string // 16
+  FAX: string // 17
+  EMAIL_ADDRESS: string // 18
+  MCS150_DATE: string // 19
+  MCS150_MILEAGE: string // 20
+  MCS150_MILEAGE_YEAR: string // 21
+  ADD_DATE: string // 22
+  OIC_STATE: string // 23
+  NBR_POWER_UNIT: string // 24
+  DRIVER_TOTAL: string // 25
 }
 
 export interface IContentDoc extends IContent {
