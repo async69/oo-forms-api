@@ -59,7 +59,7 @@ const ContentResolver = {
         const dataTime = new Date(data.ADD_DATE).getTime()
         const fromTime = new Date(prop.ADD_DATE.from).getTime()
         const toTime = new Date(prop.ADD_DATE.to).getTime()
-        if (dataTime <= toTime && dataTime >= fromTime) {
+        if (dataTime <= toTime && dataTime >= fromTime && new Date(data.ADD_DATE).getFullYear() >= 2010) {
           filteredDates.push(data)
         }
       })
