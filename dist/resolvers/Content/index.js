@@ -65,7 +65,7 @@ function processLineByLine() {
         return __generator(this, function (_b) {
             switch (_b.label) {
                 case 0:
-                    fileStream = fs_1.default.createReadStream(fs_1.default.realpathSync('./src/blob/file.txt'));
+                    fileStream = fs_1.default.createReadStream(fs_1.default.realpathSync(__dirname + "../../../blob/file.txt"));
                     rl = readline_1.default.createInterface({
                         input: fileStream,
                         crlfDelay: Infinity
@@ -142,54 +142,59 @@ var ContentResolver = {
         fetchWithFilters: function (_, _a) {
             var prop = _a.input;
             return __awaiter(this, void 0, void 0, function () {
-                var collection, results, dateResults, numberOfPages, remainder, start_index;
+                var collection, resolvedProps, filteredDates, filteredProps, finalResults, numberOfPages, remainder, start_index;
                 return __generator(this, function (_b) {
                     switch (_b.label) {
                         case 0: return [4, ContentResolver.Query.fetchContents({}, {})];
                         case 1:
                             collection = _b.sent();
-                            results = [];
+                            resolvedProps = [];
                             collection.forEach(function (data) {
-                                if (prop.DRIVER_TOTAL) {
-                                    if (Number(data.DRIVER_TOTAL) === prop.DRIVER_TOTAL) {
-                                        results.push(data);
-                                    }
-                                }
-                                if (prop.NBR_POWER_UNIT) {
-                                    if (Number(data.NBR_POWER_UNIT) === prop.NBR_POWER_UNIT)
-                                        results.push(data);
-                                }
-                                if (prop.PHY_STATE) {
-                                    if (String(data.PHY_STATE) === prop.PHY_STATE)
-                                        results.push(data);
-                                }
-                                if (prop.CARRIER_OPERATION) {
-                                    console.log("hereeee");
-                                    if (String(data.CARRIER_OPERATION) === prop.CARRIER_OPERATION)
-                                        results.push(data);
-                                }
-                                if (prop.PC_FLAG) {
-                                    if (String(data.PC_FLAG) === prop.PC_FLAG)
-                                        results.push(data);
-                                }
+                                if (data.CARRIER_OPERATION === 'A' && data.PC_FLAG === 'N' && Number(data.NBR_POWER_UNIT) < 5)
+                                    resolvedProps.push(data);
                             });
-                            dateResults = [];
-                            results.forEach(function (data) {
+                            filteredDates = [];
+                            resolvedProps.forEach(function (data) {
                                 var dataTime = new Date(data.ADD_DATE).getTime();
                                 var fromTime = new Date(prop.ADD_DATE.from).getTime();
                                 var toTime = new Date(prop.ADD_DATE.to).getTime();
                                 if (dataTime <= toTime && dataTime >= fromTime) {
-                                    dateResults.push(data);
+                                    filteredDates.push(data);
                                 }
                             });
-                            numberOfPages = dateResults.length / 50;
-                            remainder = dateResults.length % 50;
+                            filteredProps = [];
+                            filteredDates.forEach(function (data) {
+                                if (prop.DRIVER_TOTAL) {
+                                    if (Number(data.DRIVER_TOTAL) === prop.DRIVER_TOTAL) {
+                                        filteredProps.push(data);
+                                    }
+                                }
+                                if (prop.NBR_POWER_UNIT) {
+                                    if (Number(data.NBR_POWER_UNIT) === prop.NBR_POWER_UNIT)
+                                        filteredProps.push(data);
+                                }
+                                if (prop.PHY_STATE) {
+                                    if (String(data.PHY_STATE) === prop.PHY_STATE)
+                                        filteredProps.push(data);
+                                }
+                                if (prop.CARRIER_OPERATION) {
+                                    if (String(data.CARRIER_OPERATION) === prop.CARRIER_OPERATION)
+                                        filteredProps.push(data);
+                                }
+                                if (prop.PC_FLAG) {
+                                    if (String(data.PC_FLAG) === prop.PC_FLAG)
+                                        filteredProps.push(data);
+                                }
+                            });
+                            finalResults = filteredProps.length > 0 ? filteredProps : filteredDates;
+                            numberOfPages = finalResults.length / 50;
+                            remainder = finalResults.length % 50;
                             if (remainder > 0 || remainder < 1)
                                 numberOfPages += 1;
                             start_index = (prop.PAGE_NUMBER - 1) * 50;
                             return [2, {
                                     count: Math.floor(numberOfPages),
-                                    results: dateResults.slice(start_index, start_index + 50)
+                                    results: finalResults.slice(0, 200)
                                 }];
                     }
                 });
