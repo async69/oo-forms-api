@@ -19,7 +19,7 @@ async function processLineByLine() {
   let count = 0;
   const data = [];
   for await (const line of rl) {
-    if (count === 200000) return data;
+    if (count === 400000) return data;
     data.push(line)
     count++
   }
